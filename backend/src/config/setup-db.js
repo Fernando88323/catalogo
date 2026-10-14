@@ -10,8 +10,10 @@ const run = async (conn, file) =>
 (async () => {
   const conn = await mysql.createConnection({
     host: process.env.DB_HOST,
+    port: Number(process.env.DB_PORT || 3306),
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
+    ssl: process.env.DB_SSL === 'true' ? {} : undefined,
     multipleStatements: true,
   });
   await run(conn, 'schema.sql');
@@ -30,4 +32,3 @@ const run = async (conn, file) =>
   console.log('Base de datos lista. Admin:', email);
   await conn.end();
 })().catch((e) => { console.error(e.message); process.exit(1); });
-
