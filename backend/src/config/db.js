@@ -1,4 +1,5 @@
 const mysql = require('mysql2/promise');
+const ssl = require('./db-ssl');
 
 module.exports = mysql.createPool({
   host: process.env.DB_HOST,
@@ -6,7 +7,7 @@ module.exports = mysql.createPool({
   user: process.env.DB_USER,
   password: process.env.DB_PASSWORD,
   database: process.env.DB_NAME,
-  ssl: process.env.DB_SSL === 'true' ? {} : undefined,
+  ssl,
   waitForConnections: true,
   connectionLimit: 10,
 });

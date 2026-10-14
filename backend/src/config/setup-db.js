@@ -3,6 +3,7 @@ const fs = require('fs');
 const path = require('path');
 const mysql = require('mysql2/promise');
 const bcrypt = require('bcryptjs');
+const ssl = require('./db-ssl');
 
 const run = async (conn, file) =>
   conn.query(fs.readFileSync(path.join(__dirname, '..', '..', 'sql', file), 'utf8').replace(/^\uFEFF/, ''));
@@ -13,7 +14,7 @@ const run = async (conn, file) =>
     port: Number(process.env.DB_PORT || 3306),
     user: process.env.DB_USER,
     password: process.env.DB_PASSWORD,
-    ssl: process.env.DB_SSL === 'true' ? {} : undefined,
+    ssl,
     multipleStatements: true,
   });
   await run(conn, 'schema.sql');

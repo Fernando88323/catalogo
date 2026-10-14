@@ -38,6 +38,7 @@ En Vercel, abre el proyecto de la API y, en **Settings → Environment Variables
 | `DB_PASSWORD` | Contraseña de la base |
 | `DB_NAME` | Nombre de la base de datos |
 | `DB_SSL` | `true` |
+| `DB_SSL_CA_BASE64` | Opcional: certificado CA de TiDB codificado en Base64 si lo requiere el proveedor |
 | `JWT_SECRET` | Secreto aleatorio largo y privado |
 | `CORS_ORIGIN` | URL HTTPS del sitio frontend en Vercel, sin `/` al final |
 | `CLOUDINARY_CLOUD_NAME` | Nombre del cloud de Cloudinary |
@@ -45,6 +46,8 @@ En Vercel, abre el proyecto de la API y, en **Settings → Environment Variables
 | `CLOUDINARY_API_SECRET` | API secret de Cloudinary |
 
 No agregues comillas a los valores ni publiques secretos. Después de crear estas variables, despliega el backend y copia su dominio HTTPS, por ejemplo `https://mi-api.vercel.app`.
+
+Si TiDB requiere el certificado CA que muestra su panel, descarga el archivo PEM y conviértelo a Base64 en PowerShell con `[Convert]::ToBase64String([IO.File]::ReadAllBytes('C:\ruta\al\ca.pem'))`. Guarda el resultado en `DB_SSL_CA_BASE64` tanto en `backend\.env` (para inicializar el esquema desde tu equipo) como en Vercel.
 
 Comprueba que `https://mi-api.vercel.app/api/health` responda `{"ok":true}`.
 
