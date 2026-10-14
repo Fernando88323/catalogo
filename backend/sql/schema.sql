@@ -1,0 +1,38 @@
+﻿CREATE DATABASE IF NOT EXISTS catalogo CHARACTER SET utf8mb4 COLLATE utf8mb4_unicode_ci;
+USE catalogo;
+
+CREATE TABLE IF NOT EXISTS categories (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  name VARCHAR(100) NOT NULL,
+  slug VARCHAR(120) NOT NULL UNIQUE
+);
+
+CREATE TABLE IF NOT EXISTS products (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  category_id INT UNSIGNED NULL,
+  name VARCHAR(150) NOT NULL,
+  description TEXT,
+  price DECIMAL(10,2) NOT NULL,
+  image_url VARCHAR(255),
+  stock INT NOT NULL DEFAULT 0,
+  active TINYINT(1) NOT NULL DEFAULT 1,
+  created_at TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
+  CONSTRAINT fk_products_category FOREIGN KEY (category_id) REFERENCES categories(id) ON DELETE SET NULL,
+  INDEX idx_products_active (active),
+  INDEX idx_products_name (name)
+);
+
+CREATE TABLE IF NOT EXISTS product_images (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  product_id INT UNSIGNED NOT NULL,
+  url VARCHAR(500) NOT NULL,
+  position TINYINT UNSIGNED NOT NULL DEFAULT 0,
+  CONSTRAINT fk_images_product FOREIGN KEY (product_id) REFERENCES products(id) ON DELETE CASCADE,
+  INDEX idx_images_product (product_id)
+);
+
+CREATE TABLE IF NOT EXISTS admins (
+  id INT UNSIGNED AUTO_INCREMENT PRIMARY KEY,
+  email VARCHAR(150) NOT NULL UNIQUE,
+  password_hash VARCHAR(255) NOT NULL
+);
